@@ -103,9 +103,13 @@ k () {
     if [[ "$#base_dirs" > 1 ]]; then
       # Only add a newline if its not the first iteration
       if [[ "$base_dir" != "${base_dirs[1]}" ]]; then
-        print
+        if [[ ! -f "$base_dir" ]]; then
+          print
+        fi
       fi
-      print -r "${base_dir}:"
+      if [[ ! -f "$base_dir" ]]; then
+        print -r "${base_dir}:"
+      fi
     fi
     # ----------------------------------------------------------------------------
     # Vars
@@ -239,7 +243,9 @@ k () {
     done
 
     # Print total block before listing
-    echo "total $TOTAL_BLOCKS"
+    if [[ ! -f "$base_dir" ]]; then
+      echo "total $TOTAL_BLOCKS"
+    fi
 
     # ----------------------------------------------------------------------------
     # Loop through each line of stat, pad where appropriate and do git dirty checking
